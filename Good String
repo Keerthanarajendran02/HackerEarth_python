@@ -1,0 +1,29 @@
+You are given a string of length 𝑁 
+N (𝑁≥2N≥2) and need to transform it into a "good string," where the first and last characters are the same. 
+You can remove letters from either the beginning or the end. Find the minimum number of operations required, or return "-1" if it's impossible.
+
+Solution:
+def min_operations_to_good_string(S):
+    n = len(S)
+    min_ops = float('inf')
+    
+    # Iterate over all possible pairs of characters in the string
+    for i in range(n):
+        for j in range(i+1, n):
+            if S[i] == S[j]:
+                # Calculate the number of operations needed
+                ops = i + (n - 1 - j)
+                if ops < min_ops:
+                    min_ops = ops
+    
+    # If no valid pair found, return -1
+    return min_ops if min_ops != float('inf') else -1
+
+# Read the number of test cases
+T = int(input())
+
+# Process each test case
+for _ in range(T):
+    S = input().strip()
+    result = min_operations_to_good_string(S)
+    print(result)

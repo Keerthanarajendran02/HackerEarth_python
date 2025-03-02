@@ -1,0 +1,47 @@
+Milly likes to solve problems very much. Today she is solving a problem in which she has N, L and R and she has to find out the total count of Magic Numbers in [L, R] .
+Magic Numbers are the numbers which are divisible by at least one prime number in [1, N] . 
+Being a beginner in programming, this one seems too hard for her to solve. So, she is asking you for her help, so your task is to solve this problem.
+Sample Input
+2
+5 1 10
+10 10 20
+
+Solution:
+import sys
+from itertools import combinations
+from math import gcd
+from functools import reduce
+
+def lcm(a, b):
+    return (a * b) // gcd(a, b)
+
+def count_multiples(L, R, nums):
+    total = 0
+    m = len(nums)
+    
+    for i in range(1, m + 1):
+        for comb in combinations(nums, i):
+            l = reduce(lcm, comb)
+            count = (R // l) - ((L - 1) // l)
+            if i % 2 == 1:
+                total += count
+            else:
+                total -= count
+    
+    return total
+
+def solve():
+    input = sys.stdin.read
+    data = input().split('\n')
+    T = int(data[0])
+    results = []
+    
+    for i in range(1, T + 1):
+        N, L, R = map(int, data[i].split())
+        primes = [p for p in range(2, N + 1) if all(p % d != 0 for d in range(2, int(p ** 0.5) + 1))]
+        results.append(str(count_multiples(L, R, primes)))
+    
+    sys.stdout.write('\n'.join(results) + '\n')
+
+if __name__ == "__main__":
+    solve()
